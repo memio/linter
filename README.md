@@ -1,4 +1,4 @@
-# Memio's Linter [![Travis CI](https://travis-ci.org/memio/linter.png)](https://travis-ci.org/memio/linter) [![SensioLabsInsight](https://insight.sensiolabs.com/projects/e5794d5b-5305-4569-bc9b-caeecf9ae982/mini.png)](https://insight.sensiolabs.com/projects/e5794d5b-5305-4569-bc9b-caeecf9ae982)
+# Memio's Linter [![Travis CI](https://travis-ci.org/memio/linter.png)](https://travis-ci.org/memio/linter) [![SensioLabsInsight](https://insight.sensiolabs.com/projects/47d30f7a-5ee9-43e3-9ff8-b8a139ed5999/mini.png)](https://insight.sensiolabs.com/projects/47d30f7a-5ee9-43e3-9ff8-b8a139ed5999)
 
 A set of [Memio constraints](http://github.com/memio/validator) that check
 [Memio models](http://github.com/memio/model) for syntax errors and the likes.
