@@ -17,13 +17,12 @@
         "Memio\\Linter\\": "src/Memio/Linter"
     }},
     "require": {
-        "php": ">=5.3.3",
-        "memio/model": "~1.0",
-        "memio/validator": "~1.0"
+        "php": "^5.3|^7.0",
+        "memio/model": "^1.0",
+        "memio/validator": "^1.0"
     },
     "require-dev": {
-        "ciaranmcnulty/phpspec-typehintedmethods": "~1.1",
-        "fabpot/php-cs-fixer": "~1.6",
-        "phpspec/phpspec": "~2.2"
+        "fabpot/php-cs-fixer": "^1.6",
+        "phpspec/phpspec": "^2.4"
     }
 }
