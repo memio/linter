@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.0.2: Updated dependencies
+
+* added support for PHP 7
+
 ## 1.0.1: Fixed Insight badge
 
 * fixed Insight badge
