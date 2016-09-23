@@ -31,7 +31,7 @@ class ContractMethodsCannotHaveBodySpec extends ObjectBehavior
     ) {
         $contract->getName()->willReturn('HttpKernelInterface');
         $contract->allMethods()->willReturn([$method]);
-        $method->getBody()->willReturn(null);
+        $method->getBody()->willReturn('');
 
         $this->validate($contract)->shouldHaveType(NoneViolation::class);
     }

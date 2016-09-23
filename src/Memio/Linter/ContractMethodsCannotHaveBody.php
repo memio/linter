@@ -27,7 +27,7 @@ class ContractMethodsCannotHaveBody implements Constraint
         $contractName = $model->getName();
         $messages = [];
         foreach ($model->allMethods() as $method) {
-            if (null !== $method->getBody()) {
+            if ('' !== $method->getBody()) {
                 $messages[] = sprintf(
                     'Contract "%s" Method "%s" cannot have a body',
                     $contractName,

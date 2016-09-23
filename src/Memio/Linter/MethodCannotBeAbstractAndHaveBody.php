@@ -24,7 +24,7 @@ class MethodCannotBeAbstractAndHaveBody implements Constraint
 {
     public function validate($model) : Violation
     {
-        if ($model->isAbstract() && null !== $model->getBody()) {
+        if ($model->isAbstract() && '' !== $model->getBody()) {
             return new SomeViolation(sprintf(
                 'Method "%s" cannot be abstract and have a body',
                 $model->getName()
