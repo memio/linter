@@ -11,25 +11,31 @@
 
 namespace Memio\Linter;
 
-use Memio\Validator\Constraint;
-use Memio\Validator\Violation\NoneViolation;
-use Memio\Validator\Violation\SomeViolation;
+use Memio\Validator\{
+    Constraint,
+    Violation
+};
+use Memio\Validator\Violation\{
+    NoneViolation,
+    SomeViolation
+};
 
 class ConcreteObjectMethodsCannotBeAbstract implements Constraint
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function validate($model)
+    public function validate($model) : Violation
     {
         if ($model->isAbstract()) {
             return new NoneViolation();
         }
         $objectName = $model->getName();
-        $messages = array();
+        $messages = [];
         foreach ($model->allMethods() as $method) {
             if ($method->isAbstract()) {
-                $messages[] = sprintf('Concrete Object "%s" Method "%s" cannot be abstract', $objectName, $method->getName());
+                $messages[] = sprintf(
+                    'Concrete Object "%s" Method "%s" cannot be abstract',
+                    $objectName,
+                    $method->getName()
+                );
             }
         }
 

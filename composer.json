@@ -17,7 +17,7 @@
         "Memio\\Linter\\": "src/Memio/Linter"
     }},
     "require": {
-        "php": "^5.3|^7.0",
+        "php": "^7.0",
         "memio/model": "^1.0",
         "memio/validator": "^1.0"
     },

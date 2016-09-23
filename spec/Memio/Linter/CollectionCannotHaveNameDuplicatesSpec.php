@@ -15,28 +15,39 @@ use Memio\Model\Argument;
 use Memio\Model\Constant;
 use Memio\Model\Method;
 use Memio\Model\Property;
+use Memio\Validator\Constraint;
+use Memio\Validator\Violation\NoneViolation;
+use Memio\Validator\Violation\SomeViolation;
 use PhpSpec\ObjectBehavior;
 
 class CollectionCannotHaveNameDuplicatesSpec extends ObjectBehavior
 {
     function it_is_a_constraint()
     {
-        $this->shouldImplement('Memio\Validator\Constraint');
+        $this->shouldImplement(Constraint::class);
     }
 
-    function it_is_fine_with_unique_names(Argument $argument1, Argument $argument2)
-    {
+    function it_is_fine_with_unique_names(
+        Argument $argument1,
+        Argument $argument2
+    ) {
         $argument1->getName()->willReturn('myArgument1');
         $argument2->getName()->willReturn('myArgument2');
 
-        $this->validate(array($argument1, $argument2))->shouldHaveType('Memio\Validator\Violation\NoneViolation');
+        $this->validate([$argument1, $argument2])->shouldHaveType(
+            NoneViolation::class
+        );
     }
 
-    function it_is_not_fine_with_name_duplicates(Argument $argument1, Argument $argument2)
-    {
+    function it_is_not_fine_with_name_duplicates(
+        Argument $argument1,
+        Argument $argument2
+    ) {
         $argument1->getName()->willReturn('myArgument');
         $argument2->getName()->willReturn('myArgument');
 
-        $this->validate(array($argument1, $argument2))->shouldHaveType('Memio\Validator\Violation\SomeViolation');
+        $this->validate([$argument1, $argument2])->shouldHaveType(
+            SomeViolation::class
+        );
     }
 }

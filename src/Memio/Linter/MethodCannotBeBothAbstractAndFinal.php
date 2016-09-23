@@ -11,19 +11,24 @@
 
 namespace Memio\Linter;
 
-use Memio\Validator\Constraint;
-use Memio\Validator\Violation\NoneViolation;
-use Memio\Validator\Violation\SomeViolation;
+use Memio\Validator\{
+    Constraint,
+    Violation
+};
+use Memio\Validator\Violation\{
+    NoneViolation,
+    SomeViolation
+};
 
 class MethodCannotBeBothAbstractAndFinal implements Constraint
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function validate($model)
+    public function validate($model) : Violation
     {
         if ($model->isAbstract() && $model->isFinal()) {
-            return new SomeViolation(sprintf('Method "%s" cannot be both abstract and final', $model->getName()));
+            return new SomeViolation(sprintf(
+                'Method "%s" cannot be both abstract and final',
+                $model->getName()
+            ));
         }
 
         return new NoneViolation();

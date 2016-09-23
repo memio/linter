@@ -13,40 +13,47 @@ namespace spec\Memio\Linter;
 
 use Memio\Model\Object;
 use Memio\Model\Method;
+use Memio\Validator\Constraint;
+use Memio\Validator\Violation\NoneViolation;
+use Memio\Validator\Violation\SomeViolation;
 use PhpSpec\ObjectBehavior;
 
 class ConcreteObjectMethodsCannotBeAbstractSpec extends ObjectBehavior
 {
     function it_is_a_constraint()
     {
-        $this->shouldImplement('Memio\Validator\Constraint');
+        $this->shouldImplement(Constraint::class);
     }
 
-    function it_is_fine_with_concrete_object_and_concrete_methods(Object $object, Method $method)
-    {
+    function it_is_fine_with_concrete_object_and_concrete_methods(
+        Object $object,
+        Method $method
+    ) {
         $object->getName()->willReturn('ConcreteClass');
         $object->isAbstract()->willReturn(false);
-        $object->allMethods()->willReturn(array($method));
+        $object->allMethods()->willReturn([$method]);
         $method->isAbstract()->willReturn(false);
 
-        $this->validate($object)->shouldHaveType('Memio\Validator\Violation\NoneViolation');
+        $this->validate($object)->shouldHaveType(NoneViolation::class);
     }
 
     function it_is_fine_with_abstract_objects(Object $object)
     {
         $object->isAbstract()->willReturn(true);
 
-        $this->validate($object)->shouldHaveType('Memio\Validator\Violation\NoneViolation');
+        $this->validate($object)->shouldHaveType(NoneViolation::class);
     }
 
-    function it_is_not_fine_with_concrete_object_and_abstract_methods(Object $object, Method $method)
-    {
+    function it_is_not_fine_with_concrete_object_and_abstract_methods(
+        Object $object,
+        Method $method
+    ) {
         $object->getName()->willReturn('ConcreteClass');
         $object->isAbstract()->willReturn(false);
-        $object->allMethods()->willReturn(array($method));
+        $object->allMethods()->willReturn([$method]);
         $method->isAbstract()->willReturn(true);
         $method->getName()->willReturn('abstractClass');
 
-        $this->validate($object)->shouldHaveType('Memio\Validator\Violation\SomeViolation');
+        $this->validate($object)->shouldHaveType(SomeViolation::class);
     }
 }

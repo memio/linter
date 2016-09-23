@@ -11,23 +11,29 @@
 
 namespace Memio\Linter;
 
-use Memio\Validator\Constraint;
-use Memio\Validator\Violation\NoneViolation;
-use Memio\Validator\Violation\SomeViolation;
+use Memio\Validator\{
+    Constraint,
+    Violation
+};
+use Memio\Validator\Violation\{
+    NoneViolation,
+    SomeViolation
+};
 
 class ContractMethodsCanOnlyBePublic implements Constraint
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function validate($model)
+     public function validate($model) : Violation
     {
         $contractName = $model->getName();
-        $messages = array();
+        $messages = [];
         foreach ($model->allMethods() as $method) {
             $visibility = $method->getVisibility();
             if ('' !== $visibility && 'public' !== $visibility) {
-                $messages[] = sprintf('Contract "%s" Method "%s" can only be public', $contractName, $method->getName());
+                $messages[] = sprintf(
+                    'Contract "%s" Method "%s" can only be public',
+                    $contractName,
+                    $method->getName()
+                );
             }
         }
 
