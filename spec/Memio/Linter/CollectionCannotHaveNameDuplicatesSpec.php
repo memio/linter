@@ -12,9 +12,6 @@
 namespace spec\Memio\Linter;
 
 use Memio\Model\Argument;
-use Memio\Model\Constant;
-use Memio\Model\Method;
-use Memio\Model\Property;
 use Memio\Validator\Constraint;
 use Memio\Validator\Violation\NoneViolation;
 use Memio\Validator\Violation\SomeViolation;

@@ -11,14 +11,10 @@
 
 namespace Memio\Linter;
 
-use Memio\Validator\{
-    Constraint,
-    Violation
-};
-use Memio\Validator\Violation\{
-    NoneViolation,
-    SomeViolation
-};
+use Memio\Validator\Constraint;
+use Memio\Validator\Violation;
+use Memio\Validator\Violation\NoneViolation;
+use Memio\Validator\Violation\SomeViolation;
 
 class MethodCannotBeBothAbstractAndFinal implements Constraint
 {

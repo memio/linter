@@ -11,14 +11,10 @@
 
 namespace Memio\Linter;
 
-use Memio\Validator\{
-    Constraint,
-    Violation
-};
-use Memio\Validator\Violation\{
-    NoneViolation,
-    SomeViolation
-};
+use Memio\Validator\Constraint;
+use Memio\Validator\Violation;
+use Memio\Validator\Violation\NoneViolation;
+use Memio\Validator\Violation\SomeViolation;
 
 class ContractMethodsCannotHaveBody implements Constraint
 {
@@ -36,6 +32,6 @@ class ContractMethodsCannotHaveBody implements Constraint
             }
         }
 
-        return (empty($messages) ? new NoneViolation() : new SomeViolation(implode("\n", $messages)));
+        return empty($messages) ? new NoneViolation() : new SomeViolation(implode("\n", $messages));
     }
 }
