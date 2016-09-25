@@ -10,7 +10,7 @@ A set of [Memio constraints](http://github.com/memio/validator) that check
 
 Install it using [Composer](https://getcomposer.org/download):
 
-    composer require memio/linter:^1.0
+    composer require memio/linter:^2.0@alpha
 
 ## Example
 
