@@ -18,8 +18,8 @@
     }},
     "require": {
         "php": "^7.0",
-        "memio/model": "dev-version-2",
-        "memio/validator": "dev-version-2"
+        "memio/model": "^2.0@alpha",
+        "memio/validator": "^2.0@alpha"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^1.6",
