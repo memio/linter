@@ -11,42 +11,49 @@
 
 namespace spec\Memio\Linter;
 
-use Memio\Model\Object;
+use Memio\Model\Objekt;
 use Memio\Model\Method;
+use Memio\Validator\Constraint;
+use Memio\Validator\Violation\NoneViolation;
+use Memio\Validator\Violation\SomeViolation;
 use PhpSpec\ObjectBehavior;
 
 class ConcreteObjectMethodsCannotBeAbstractSpec extends ObjectBehavior
 {
     function it_is_a_constraint()
     {
-        $this->shouldImplement('Memio\Validator\Constraint');
+        $this->shouldImplement(Constraint::class);
     }
 
-    function it_is_fine_with_concrete_object_and_concrete_methods(Object $object, Method $method)
-    {
-        $object->getName()->willReturn('ConcreteClass');
-        $object->isAbstract()->willReturn(false);
-        $object->allMethods()->willReturn(array($method));
+    function it_is_fine_with_concrete_objekt_and_concrete_methods(
+        Objekt $objekt,
+        Method $method
+    ) {
+        $objekt->getName()->willReturn('ConcreteClass');
+        $objekt->isAbstract()->willReturn(false);
+        $objekt->allMethods()->willReturn([$method]);
         $method->isAbstract()->willReturn(false);
 
-        $this->validate($object)->shouldHaveType('Memio\Validator\Violation\NoneViolation');
+        $this->validate($objekt)->shouldHaveType(NoneViolation::class);
     }
 
-    function it_is_fine_with_abstract_objects(Object $object)
+    function it_is_fine_with_abstract_objekts(Objekt $objekt)
     {
-        $object->isAbstract()->willReturn(true);
+        $objekt->isAbstract()->willReturn(true);
 
-        $this->validate($object)->shouldHaveType('Memio\Validator\Violation\NoneViolation');
+        $this->validate($objekt)->shouldHaveType(NoneViolation::class);
     }
 
-    function it_is_not_fine_with_concrete_object_and_abstract_methods(Object $object, Method $method)
-    {
-        $object->getName()->willReturn('ConcreteClass');
-        $object->isAbstract()->willReturn(false);
-        $object->allMethods()->willReturn(array($method));
+    function it_is_not_fine_with_concrete_objekt_and_abstract_methods(
+        Objekt $objekt,
+        Method $method
+    ) {
+        $objekt->getName()->willReturn('ConcreteClass');
+        $objekt->isAbstract()->willReturn(false);
+        $objekt->allMethods()->willReturn([$method]);
         $method->isAbstract()->willReturn(true);
         $method->getName()->willReturn('abstractClass');
 
-        $this->validate($object)->shouldHaveType('Memio\Validator\Violation\SomeViolation');
+        $this->validate($objekt)->shouldHaveType(SomeViolation::class);
     }
 }

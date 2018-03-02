@@ -12,18 +12,19 @@
 namespace Memio\Linter;
 
 use Memio\Validator\Constraint;
+use Memio\Validator\Violation;
 use Memio\Validator\Violation\NoneViolation;
 use Memio\Validator\Violation\SomeViolation;
 
 class MethodCannotBeBothAbstractAndPrivate implements Constraint
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function validate($model)
+    public function validate($model): Violation
     {
         if ($model->isAbstract() && 'private' === $model->getVisibility()) {
-            return new SomeViolation(sprintf('Method "%s" cannot be both abstract and private', $model->getName()));
+            return new SomeViolation(sprintf(
+                'Method "%s" cannot be both abstract and private',
+                $model->getName()
+            ));
         }
 
         return new NoneViolation();

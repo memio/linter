@@ -12,24 +12,26 @@
 namespace Memio\Linter;
 
 use Memio\Validator\Constraint;
+use Memio\Validator\Violation;
 use Memio\Validator\Violation\NoneViolation;
 use Memio\Validator\Violation\SomeViolation;
 
 class ContractMethodsCannotHaveBody implements Constraint
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function validate($model)
+    public function validate($model): Violation
     {
         $contractName = $model->getName();
-        $messages = array();
+        $messages = [];
         foreach ($model->allMethods() as $method) {
-            if (null !== $method->getBody()) {
-                $messages[] = sprintf('Contract "%s" Method "%s" cannot have a body', $contractName, $method->getName());
+            if ('' !== $method->getBody()) {
+                $messages[] = sprintf(
+                    'Contract "%s" Method "%s" cannot have a body',
+                    $contractName,
+                    $method->getName()
+                );
             }
         }
 
-        return (empty($messages) ? new NoneViolation() : new SomeViolation(implode("\n", $messages)));
+        return empty($messages) ? new NoneViolation() : new SomeViolation(implode("\n", $messages));
     }
 }

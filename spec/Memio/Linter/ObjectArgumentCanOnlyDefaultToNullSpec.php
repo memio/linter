@@ -12,48 +12,52 @@
 namespace spec\Memio\Linter;
 
 use Memio\Model\Argument;
-use Memio\Model\Constant;
-use Memio\Model\Method;
-use Memio\Model\Property;
+use Memio\Validator\Constraint;
+use Memio\Validator\Violation\NoneViolation;
+use Memio\Validator\Violation\SomeViolation;
 use PhpSpec\ObjectBehavior;
 
 class ObjectArgumentCanOnlyDefaultToNullSpec extends ObjectBehavior
 {
     function it_is_a_constraint()
     {
-        $this->shouldImplement('Memio\Validator\Constraint');
+        $this->shouldImplement(Constraint::class);
     }
 
-    function it_is_fine_with_scalar_arguments(Argument $argument)
-    {
+    function it_is_fine_with_scalar_arguments(
+        Argument $argument
+    ) {
         $argument->getType()->willReturn('string');
         $argument->getDefaultValue()->willReturn(null);
 
-        $this->validate($argument)->shouldHaveType('Memio\Validator\Violation\NoneViolation');
+        $this->validate($argument)->shouldHaveType(NoneViolation::class);
     }
 
-    function it_is_fine_with_object_argument_without_default_value(Argument $argument)
-    {
+    function it_is_fine_with_object_argument_without_default_value(
+        Argument $argument
+    ) {
         $argument->getType()->willReturn('DateTime');
         $argument->getDefaultValue()->willReturn(null);
 
-        $this->validate($argument)->shouldHaveType('Memio\Validator\Violation\NoneViolation');
+        $this->validate($argument)->shouldHaveType(NoneViolation::class);
     }
 
-    function it_is_fine_with_object_argument_defaulting_to_null(Argument $argument)
-    {
+    function it_is_fine_with_object_argument_defaulting_to_null(
+        Argument $argument
+    ) {
         $argument->getType()->willReturn('DateTime');
         $argument->getDefaultValue()->willReturn('null');
 
-        $this->validate($argument)->shouldHaveType('Memio\Validator\Violation\NoneViolation');
+        $this->validate($argument)->shouldHaveType(NoneViolation::class);
     }
 
-    function it_is_not_fine_with_object_argument_not_defaulting_to_null(Argument $argument)
-    {
+    function it_is_not_fine_with_object_argument_not_defaulting_to_null(
+        Argument $argument
+    ) {
         $argument->getType()->willReturn('DateTime');
         $argument->getDefaultValue()->willReturn('""');
         $argument->getName()->willReturn('objectArgument');
 
-        $this->validate($argument)->shouldHaveType('Memio\Validator\Violation\SomeViolation');
+        $this->validate($argument)->shouldHaveType(SomeViolation::class);
     }
 }

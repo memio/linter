@@ -12,18 +12,19 @@
 namespace Memio\Linter;
 
 use Memio\Validator\Constraint;
+use Memio\Validator\Violation;
 use Memio\Validator\Violation\NoneViolation;
 use Memio\Validator\Violation\SomeViolation;
 
 class MethodCannotBeAbstractAndHaveBody implements Constraint
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function validate($model)
+    public function validate($model): Violation
     {
-        if ($model->isAbstract() && null !== $model->getBody()) {
-            return new SomeViolation(sprintf('Method "%s" cannot be abstract and have a body', $model->getName()));
+        if ($model->isAbstract() && '' !== $model->getBody()) {
+            return new SomeViolation(sprintf(
+                'Method "%s" cannot be abstract and have a body',
+                $model->getName()
+            ));
         }
 
         return new NoneViolation();

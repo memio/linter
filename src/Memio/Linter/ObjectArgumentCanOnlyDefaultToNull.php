@@ -13,15 +13,13 @@ namespace Memio\Linter;
 
 use Memio\Model\Type;
 use Memio\Validator\Constraint;
+use Memio\Validator\Violation;
 use Memio\Validator\Violation\NoneViolation;
 use Memio\Validator\Violation\SomeViolation;
 
 class ObjectArgumentCanOnlyDefaultToNull implements Constraint
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function validate($model)
+    public function validate($model): Violation
     {
         $type = new Type($model->getType());
         $defaultValue = $model->getDefaultValue();
@@ -29,6 +27,9 @@ class ObjectArgumentCanOnlyDefaultToNull implements Constraint
             return new NoneViolation();
         }
 
-        return new SomeViolation(sprintf('Object Argument "%s" can only default to null', $model->getName()));
+        return new SomeViolation(sprintf(
+            'Object Argument "%s" can only default to null',
+            $model->getName()
+        ));
     }
 }
