@@ -19,7 +19,7 @@ use Memio\Validator\Violation\SomeViolation;
 
 class ObjectArgumentCanOnlyDefaultToNull implements Constraint
 {
-    public function validate($model) : Violation
+    public function validate($model): Violation
     {
         $type = new Type($model->getType());
         $defaultValue = $model->getDefaultValue();

@@ -18,7 +18,7 @@ use Memio\Validator\Violation\SomeViolation;
 
 class MethodCannotBeAbstractAndHaveBody implements Constraint
 {
-    public function validate($model) : Violation
+    public function validate($model): Violation
     {
         if ($model->isAbstract() && '' !== $model->getBody()) {
             return new SomeViolation(sprintf(

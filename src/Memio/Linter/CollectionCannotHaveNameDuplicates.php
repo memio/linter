@@ -19,7 +19,7 @@ use Memio\Validator\Violation\SomeViolation;
 
 class CollectionCannotHaveNameDuplicates implements Constraint
 {
-    public function validate($model) : Violation
+    public function validate($model): Violation
     {
         $firstElement = current($model);
         $fqcn = get_class($firstElement);

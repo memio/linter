@@ -18,7 +18,7 @@ use Memio\Validator\Violation\SomeViolation;
 
 class MethodCannotBeBothAbstractAndFinal implements Constraint
 {
-    public function validate($model) : Violation
+    public function validate($model): Violation
     {
         if ($model->isAbstract() && $model->isFinal()) {
             return new SomeViolation(sprintf(

@@ -18,7 +18,7 @@ use Memio\Validator\Violation\SomeViolation;
 
 class MethodCannotBeBothAbstractAndPrivate implements Constraint
 {
-    public function validate($model) : Violation
+    public function validate($model): Violation
     {
         if ($model->isAbstract() && 'private' === $model->getVisibility()) {
             return new SomeViolation(sprintf(

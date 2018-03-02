@@ -18,7 +18,7 @@ use Memio\Validator\Violation\SomeViolation;
 
 class MethodCannotBeBothAbstractAndStatic implements Constraint
 {
-    public function validate($model) : Violation
+    public function validate($model): Violation
     {
         if ($model->isAbstract() && $model->isStatic()) {
             return new SomeViolation(sprintf(

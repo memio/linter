@@ -30,7 +30,7 @@ class ContractMethodsCannotBeFinalSpec extends ObjectBehavior
         Method $method
     ) {
         $contract->getName()->willReturn('HttpKernelInterface');
-        $contract->allMethods()->willReturn(array($method));
+        $contract->allMethods()->willReturn([$method]);
         $method->isFinal()->willReturn(false);
 
         $this->validate($contract)->shouldHaveType(NoneViolation::class);

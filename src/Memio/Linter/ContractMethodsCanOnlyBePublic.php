@@ -18,7 +18,7 @@ use Memio\Validator\Violation\SomeViolation;
 
 class ContractMethodsCanOnlyBePublic implements Constraint
 {
-    public function validate($model) : Violation
+    public function validate($model): Violation
     {
         $contractName = $model->getName();
         $messages = [];
