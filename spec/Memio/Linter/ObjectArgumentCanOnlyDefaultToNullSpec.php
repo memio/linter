@@ -24,39 +24,25 @@ class ObjectArgumentCanOnlyDefaultToNullSpec extends ObjectBehavior
         $this->shouldImplement(Constraint::class);
     }
 
-    function it_is_fine_with_scalar_arguments(
-        Argument $argument
-    ) {
-        $argument->getType()->willReturn('string');
-        $argument->getDefaultValue()->willReturn(null);
+    function it_accepts_object_arguments_without_default_value()
+    {
+        $argument = new Argument('DateTime', 'startDate');
 
         $this->validate($argument)->shouldHaveType(NoneViolation::class);
     }
 
-    function it_is_fine_with_object_argument_without_default_value(
-        Argument $argument
-    ) {
-        $argument->getType()->willReturn('DateTime');
-        $argument->getDefaultValue()->willReturn(null);
+    function it_accepts_object_arguments_with_null_default_value()
+    {
+        $argument = new Argument('DateTime', 'startDate');
+        $argument->defaultValue = 'null';
 
         $this->validate($argument)->shouldHaveType(NoneViolation::class);
     }
 
-    function it_is_fine_with_object_argument_defaulting_to_null(
-        Argument $argument
-    ) {
-        $argument->getType()->willReturn('DateTime');
-        $argument->getDefaultValue()->willReturn('null');
-
-        $this->validate($argument)->shouldHaveType(NoneViolation::class);
-    }
-
-    function it_is_not_fine_with_object_argument_not_defaulting_to_null(
-        Argument $argument
-    ) {
-        $argument->getType()->willReturn('DateTime');
-        $argument->getDefaultValue()->willReturn('""');
-        $argument->getName()->willReturn('objectArgument');
+    function it_rejects_object_arguments_with_non_null_default_value()
+    {
+        $argument = new Argument('DateTime', 'startDate');
+        $argument->defaultValue = '42';
 
         $this->validate($argument)->shouldHaveType(SomeViolation::class);
     }

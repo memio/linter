@@ -17,34 +17,37 @@ use Memio\Validator\Violation\NoneViolation;
 use Memio\Validator\Violation\SomeViolation;
 use PhpSpec\ObjectBehavior;
 
-class MethodCannotBeAbstractAndHaveBodySpec extends ObjectBehavior
+class AbstractMethodCannotHaveBodySpec extends ObjectBehavior
 {
     function it_is_a_constraint()
     {
         $this->shouldImplement(Constraint::class);
     }
 
-    function it_is_fine_with_simple_methods(Method $method)
+    function it_accepts_concrete_method_with_body()
     {
-        $method->isAbstract()->willReturn(false);
-        $method->getBody()->willReturn('');
+        $method = (new Method('render'))
+            ->setBody('echo "Nobody expects the spanish inquisition";')
+        ;
 
         $this->validate($method)->shouldHaveType(NoneViolation::class);
     }
 
-    function it_is_fine_with_abstract_methods(Method $method)
+    function it_accepts_abstract_method_without_body()
     {
-        $method->isAbstract()->willReturn(true);
-        $method->getBody()->willReturn('');
+        $method = (new Method('render'))
+            ->makeAbstract()
+        ;
 
         $this->validate($method)->shouldHaveType(NoneViolation::class);
     }
 
-    function it_is_not_fine_with_abstract_methods_with_body(Method $method)
+    function it_rejects_abstract_method_with_body()
     {
-        $method->isAbstract()->willReturn(true);
-        $method->getBody()->willReturn('echo "hello world";');
-        $method->getName()->willReturn('__construct');
+        $method = (new Method('render'))
+            ->makeAbstract()
+            ->setBody('echo "Nobody expects the spanish inquisition";')
+        ;
 
         $this->validate($method)->shouldHaveType(SomeViolation::class);
     }

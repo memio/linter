@@ -21,15 +21,10 @@ class ObjectArgumentCanOnlyDefaultToNull implements Constraint
 {
     public function validate($model): Violation
     {
-        $type = new Type($model->getType());
-        $defaultValue = $model->getDefaultValue();
-        if (!$type->isObject() || null === $defaultValue || 'null' === $defaultValue) {
-            return new NoneViolation();
+        if ($model->type->isObject && null !== $model->defaultValue && 'null' !== $model->defaultValue) {
+            return new SomeViolation("Argument \${$model->name} of type {$model->type->name} cannot have default value different than NULL");
         }
 
-        return new SomeViolation(sprintf(
-            'Object Argument "%s" can only default to null',
-            $model->getName()
-        ));
+        return new NoneViolation();
     }
 }

@@ -17,26 +17,44 @@ use Memio\Validator\Violation\NoneViolation;
 use Memio\Validator\Violation\SomeViolation;
 use PhpSpec\ObjectBehavior;
 
-class MethodCannotBeBothAbstractAndStaticSpec extends ObjectBehavior
+class AbstractMethodCannotHaveBodySpec extends ObjectBehavior
 {
     function it_is_a_constraint()
     {
         $this->shouldImplement(Constraint::class);
     }
 
-    function it_is_fine_with_non_static_abstract_methods(Method $method)
+    function it_accepts_non_static_concrete_method()
     {
-        $method->isAbstract()->willReturn(true);
-        $method->isStatic()->willReturn(false);
+        $method = new Method('render');
 
         $this->validate($method)->shouldHaveType(NoneViolation::class);
     }
 
-    function it_is_not_fine_with_abstract_and_static_methods(Method $method)
+    function it_accepts_static_concrete_method()
     {
-        $method->isAbstract()->willReturn(true);
-        $method->isStatic()->willReturn(true);
-        $method->getName()->willReturn('__construct');
+        $method = (new Method('render'))
+            ->makeStatic()
+        ;
+
+        $this->validate($method)->shouldHaveType(NoneViolation::class);
+    }
+
+    function it_accepts_non_static_abstract_method_()
+    {
+        $method = (new Method('render'))
+            ->makeAbstract()
+        ;
+
+        $this->validate($method)->shouldHaveType(NoneViolation::class);
+    }
+
+    function it_rejects_static_abstract_method()
+    {
+        $method = (new Method('render'))
+            ->makeAbstract()
+            ->makeStatic()
+        ;
 
         $this->validate($method)->shouldHaveType(SomeViolation::class);
     }

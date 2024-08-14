@@ -10,8 +10,8 @@ A set of [Memio constraints](http://github.com/memio/validator) that check
 
 Install it using [Composer](https://getcomposer.org/download):
 
-```php
-$ composer require memio/linter:^2.0
+```console
+$ composer require memio/linter:^3.0
 ```
 
 ## Example

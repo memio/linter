@@ -24,27 +24,75 @@ class MethodCannotBeBothAbstractAndPrivateSpec extends ObjectBehavior
         $this->shouldImplement(Constraint::class);
     }
 
-    function it_is_fine_with_abstract_methods(Method $method)
+    function it_accepts_concrete_public_method()
     {
-        $method->isAbstract()->willReturn(true);
-        $method->getVisibility()->willReturn('public');
+        $method = new Method('render');
 
         $this->validate($method)->shouldHaveType(NoneViolation::class);
     }
 
-    function it_is_fine_with_private_methods(Method $method)
+    function it_accepts_concrete_method_with_no_visibility()
     {
-        $method->isAbstract()->willReturn(false);
-        $method->getVisibility()->willReturn('private');
+        $method = (new Method('render'))
+            ->removeVisibility()
+        ;
 
         $this->validate($method)->shouldHaveType(NoneViolation::class);
     }
 
-    function it_is_not_fine_with_abstract_and_private_methods(Method $method)
+    function it_accepts_concrete_protected_method()
     {
-        $method->isAbstract()->willReturn(true);
-        $method->getVisibility()->willReturn('private');
-        $method->getName()->willReturn('__construct');
+        $method = (new Method('render'))
+            ->makeProtected()
+        ;
+
+        $this->validate($method)->shouldHaveType(NoneViolation::class);
+    }
+
+    function it_accepts_concrete_private_method()
+    {
+        $method = (new Method('render'))
+            ->makePrivate()
+        ;
+
+        $this->validate($method)->shouldHaveType(NoneViolation::class);
+    }
+
+    function it_accepts_abstract_public_method()
+    {
+        $method = (new Method('render'))
+            ->makeAbstract()
+        ;
+
+        $this->validate($method)->shouldHaveType(NoneViolation::class);
+    }
+
+    function it_accepts_abstract_method_with_no_visibility()
+    {
+        $method = (new Method('render'))
+            ->makeAbstract()
+            ->removeVisibility()
+        ;
+
+        $this->validate($method)->shouldHaveType(NoneViolation::class);
+    }
+
+    function it_accepts_abstract_protected_method()
+    {
+        $method = (new Method('render'))
+            ->makeAbstract()
+            ->makeProtected()
+        ;
+
+        $this->validate($method)->shouldHaveType(NoneViolation::class);
+    }
+
+    function it_rejects_abstract_private_method()
+    {
+        $method = (new Method('render'))
+            ->makeAbstract()
+            ->makePrivate()
+        ;
 
         $this->validate($method)->shouldHaveType(SomeViolation::class);
     }

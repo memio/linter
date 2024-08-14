@@ -24,24 +24,20 @@ class CollectionCannotHaveNameDuplicatesSpec extends ObjectBehavior
         $this->shouldImplement(Constraint::class);
     }
 
-    function it_is_fine_with_unique_names(
-        Argument $argument1,
-        Argument $argument2
-    ) {
-        $argument1->getName()->willReturn('myArgument1');
-        $argument2->getName()->willReturn('myArgument2');
+    function it_accepts_unique_names()
+    {
+        $argument1 = new Argument('string', 'filename');
+        $argument2 = new Argument('string', 'content');
 
         $this->validate([$argument1, $argument2])->shouldHaveType(
             NoneViolation::class
         );
     }
 
-    function it_is_not_fine_with_name_duplicates(
-        Argument $argument1,
-        Argument $argument2
-    ) {
-        $argument1->getName()->willReturn('myArgument');
-        $argument2->getName()->willReturn('myArgument');
+    function it_rejects_name_duplicates()
+    {
+        $argument1 = new Argument('string', 'filename');
+        $argument2 = new Argument('string', 'filename');
 
         $this->validate([$argument1, $argument2])->shouldHaveType(
             SomeViolation::class

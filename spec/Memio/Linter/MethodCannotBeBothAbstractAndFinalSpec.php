@@ -24,35 +24,37 @@ class MethodCannotBeBothAbstractAndFinalSpec extends ObjectBehavior
         $this->shouldImplement(Constraint::class);
     }
 
-    function it_is_fine_with_simple_methods(Method $method)
+    function it_accepts_non_final_concrete_method()
     {
-        $method->isAbstract()->willReturn(false);
-        $method->isFinal()->willReturn(false);
+        $method = new Method('render');
 
         $this->validate($method)->shouldHaveType(NoneViolation::class);
     }
 
-    function it_is_fine_with_abstract_methods(Method $method)
+    function it_accepts_final_concrete_method()
     {
-        $method->isAbstract()->willReturn(true);
-        $method->isFinal()->willReturn(false);
+        $method = (new Method('render'))
+            ->makeFinal()
+        ;
 
         $this->validate($method)->shouldHaveType(NoneViolation::class);
     }
 
-    function it_is_fine_with_final_methods(Method $method)
+    function it_accepts_non_final_abstract_method_()
     {
-        $method->isAbstract()->willReturn(false);
-        $method->isFinal()->willReturn(true);
+        $method = (new Method('render'))
+            ->makeAbstract()
+        ;
 
         $this->validate($method)->shouldHaveType(NoneViolation::class);
     }
 
-    function it_is_not_fine_with_abstract_and_final_methods(Method $method)
+    function it_rejects_final_abstract_method()
     {
-        $method->isAbstract()->willReturn(true);
-        $method->isFinal()->willReturn(true);
-        $method->getName()->willReturn('__construct');
+        $method = (new Method('render'))
+            ->makeAbstract()
+            ->makeFinal()
+        ;
 
         $this->validate($method)->shouldHaveType(SomeViolation::class);
     }
