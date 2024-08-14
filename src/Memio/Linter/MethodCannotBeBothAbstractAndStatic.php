@@ -20,11 +20,8 @@ class MethodCannotBeBothAbstractAndStatic implements Constraint
 {
     public function validate($model): Violation
     {
-        if ($model->isAbstract() && $model->isStatic()) {
-            return new SomeViolation(sprintf(
-                'Method "%s" cannot be both abstract and static',
-                $model->getName()
-            ));
+        if ($model->isAbstract && $model->isStatic) {
+            return new SomeViolation("Abstract method {$model->name}() cannot be static");
         }
 
         return new NoneViolation();

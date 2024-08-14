@@ -16,22 +16,19 @@ use Memio\Validator\Violation;
 use Memio\Validator\Violation\NoneViolation;
 use Memio\Validator\Violation\SomeViolation;
 
-class ContractMethodsCannotBeFinal implements Constraint
+class InterfaceMethodsCanOnlyBePublic implements Constraint
 {
     public function validate($model): Violation
     {
-        $contractName = $model->getName();
         $messages = [];
-        foreach ($model->allMethods() as $method) {
-            if ($method->isFinal()) {
-                $messages[] = sprintf(
-                    'Contract "%s" Method "%s" cannot be final',
-                    $contractName,
-                    $method->getName()
-                );
+        foreach ($model->methods as $method) {
+            if ('' !== $method->visibility && 'public' !== $method->visibility) {
+                $messages[] = "Interface method {$model->getName()}::{$method->name}() can only be public";
             }
         }
 
-        return empty($messages) ? new NoneViolation() : new SomeViolation(implode("\n", $messages));
+        return [] === $messages
+            ? new NoneViolation()
+            : new SomeViolation(implode("\n", $messages));
     }
 }

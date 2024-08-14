@@ -20,11 +20,8 @@ class MethodCannotBeBothAbstractAndPrivate implements Constraint
 {
     public function validate($model): Violation
     {
-        if ($model->isAbstract() && 'private' === $model->getVisibility()) {
-            return new SomeViolation(sprintf(
-                'Method "%s" cannot be both abstract and private',
-                $model->getName()
-            ));
+        if ($model->isAbstract && 'private' === $model->visibility) {
+            return new SomeViolation("Abstract method {$model->name}() cannot be private");
         }
 
         return new NoneViolation();

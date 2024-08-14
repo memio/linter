@@ -16,22 +16,22 @@ use Memio\Validator\Violation;
 use Memio\Validator\Violation\NoneViolation;
 use Memio\Validator\Violation\SomeViolation;
 
-class ContractMethodsCannotHaveBody implements Constraint
+class ConcreteClassMethodsCannotBeAbstract implements Constraint
 {
     public function validate($model): Violation
     {
-        $contractName = $model->getName();
+        if ($model->isAbstract) {
+            return new NoneViolation();
+        }
         $messages = [];
-        foreach ($model->allMethods() as $method) {
-            if ('' !== $method->getBody()) {
-                $messages[] = sprintf(
-                    'Contract "%s" Method "%s" cannot have a body',
-                    $contractName,
-                    $method->getName()
-                );
+        foreach ($model->methods as $method) {
+            if ($method->isAbstract) {
+                $messages[] = "Concrete class method {$model->getName()}::{$method->name}() cannot be abstract";
             }
         }
 
-        return empty($messages) ? new NoneViolation() : new SomeViolation(implode("\n", $messages));
+        return [] === $messages
+            ? new NoneViolation()
+            : new SomeViolation(implode("\n", $messages));
     }
 }

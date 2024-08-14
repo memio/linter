@@ -1,4 +1,4 @@
-# Memio's Linter [![Travis CI](https://travis-ci.org/memio/linter.png)](https://travis-ci.org/memio/linter) [![SensioLabsInsight](https://insight.sensiolabs.com/projects/47d30f7a-5ee9-43e3-9ff8-b8a139ed5999/mini.png)](https://insight.sensiolabs.com/projects/47d30f7a-5ee9-43e3-9ff8-b8a139ed5999)
+# Memio's Linter
 
 A set of [Memio constraints](http://github.com/memio/validator) that check
 [Memio models](http://github.com/memio/model) for syntax errors and the likes.
@@ -10,7 +10,9 @@ A set of [Memio constraints](http://github.com/memio/validator) that check
 
 Install it using [Composer](https://getcomposer.org/download):
 
-    composer require memio/linter:^2.0
+```console
+$ composer require memio/linter:^3.0
+```
 
 ## Example
 
@@ -86,8 +88,10 @@ Have a look at [the main respository](http://github.com/memio/memio) to discover
 Memio uses [phpspec](http://phpspec.net/), which means the tests also provide the documentation.
 Not convinced? Then clone this repository and run the following commands:
 
-    composer install
-    ./vendor/bin/phpspec run -n -f pretty
+```console
+$ composer install
+$ ./vendor/bin/phpspec run -n -f pretty
+```
 
 You can see the current and past versions using one of the following:
 

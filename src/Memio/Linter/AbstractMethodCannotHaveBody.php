@@ -16,12 +16,12 @@ use Memio\Validator\Violation;
 use Memio\Validator\Violation\NoneViolation;
 use Memio\Validator\Violation\SomeViolation;
 
-class MethodCannotBeBothAbstractAndFinal implements Constraint
+class AbstractMethodCannotHaveBody implements Constraint
 {
     public function validate($model): Violation
     {
-        if ($model->isAbstract && $model->isFinal) {
-            return new SomeViolation("Abstract method {$model->name}() cannot be final");
+        if ($model->isAbstract && '' !== $model->body) {
+            return new SomeViolation("Abstract method {$model->name}() cannot have body");
         }
 
         return new NoneViolation();

@@ -16,22 +16,19 @@ use Memio\Validator\Violation;
 use Memio\Validator\Violation\NoneViolation;
 use Memio\Validator\Violation\SomeViolation;
 
-class ContractMethodsCannotBeStatic implements Constraint
+class InterfaceMethodsCannotBeFinal implements Constraint
 {
     public function validate($model): Violation
     {
-        $contractName = $model->getName();
         $messages = [];
-        foreach ($model->allMethods() as $method) {
-            if ($method->isStatic()) {
-                $messages[] = sprintf(
-                    'Contract "%s" Method "%s" cannot be static',
-                    $contractName,
-                    $method->getName()
-                );
+        foreach ($model->methods as $method) {
+            if ($method->isFinal) {
+                $messages[] = "Interface method {$model->getName()}::{$method->name}() cannot be final";
             }
         }
 
-        return empty($messages) ? new NoneViolation() : new SomeViolation(implode("\n", $messages));
+        return [] === $messages
+            ? new NoneViolation()
+            : new SomeViolation(implode("\n", $messages));
     }
 }

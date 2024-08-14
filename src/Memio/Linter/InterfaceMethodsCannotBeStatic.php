@@ -16,17 +16,19 @@ use Memio\Validator\Violation;
 use Memio\Validator\Violation\NoneViolation;
 use Memio\Validator\Violation\SomeViolation;
 
-class MethodCannotBeAbstractAndHaveBody implements Constraint
+class InterfaceMethodsCannotBeStatic implements Constraint
 {
     public function validate($model): Violation
     {
-        if ($model->isAbstract() && '' !== $model->getBody()) {
-            return new SomeViolation(sprintf(
-                'Method "%s" cannot be abstract and have a body',
-                $model->getName()
-            ));
+        $messages = [];
+        foreach ($model->methods as $method) {
+            if ($method->isStatic) {
+                $messages[] = "Interface method {$model->getName()}::{$method->name}() cannot be static";
+            }
         }
 
-        return new NoneViolation();
+        return [] === $messages
+            ? new NoneViolation()
+            : new SomeViolation(implode("\n", $messages));
     }
 }

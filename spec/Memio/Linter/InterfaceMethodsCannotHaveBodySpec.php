@@ -18,32 +18,29 @@ use Memio\Validator\Violation\NoneViolation;
 use Memio\Validator\Violation\SomeViolation;
 use PhpSpec\ObjectBehavior;
 
-class ContractMethodsCannotBeFinalSpec extends ObjectBehavior
+class InterfaceMethodsCannotHaveBodySpec extends ObjectBehavior
 {
     function it_is_a_constraint()
     {
         $this->shouldImplement(Constraint::class);
     }
 
-    function it_is_fine_with_simple_methods(
-        Contract $contract,
-        Method $method
-    ) {
-        $contract->getName()->willReturn('HttpKernelInterface');
-        $contract->allMethods()->willReturn([$method]);
-        $method->isFinal()->willReturn(false);
+    function it_accepts_interface_with_abstract_methods()
+    {
+        $contract = (new Contract('Memio\PrettyPrinter\TemplateEngine'))
+            ->addMethod(new Method('render'))
+        ;
 
         $this->validate($contract)->shouldHaveType(NoneViolation::class);
     }
 
-    function it_is_not_fine_with_protected_methods(
-        Contract $contract,
-        Method $method
-    ) {
-        $contract->getName()->willReturn('HttpKernelInterface');
-        $contract->allMethods()->willReturn([$method]);
-        $method->isFinal()->willReturn(true);
-        $method->getName()->willReturn('handle');
+    function it_rejects_interface_method_that_have_body()
+    {
+        $contract = (new Contract('Memio\PrettyPrinter\TemplateEngine'))
+            ->addMethod((new Method('render'))
+                ->setBody('echo "Nobody expects the spanish inquisition";')
+            )
+        ;
 
         $this->validate($contract)->shouldHaveType(SomeViolation::class);
     }

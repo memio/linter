@@ -26,24 +26,20 @@ class CollectionCannotHaveNameDuplicates implements Constraint
         $modelType = (new FullyQualifiedName($fqcn))->getName();
         $nameCount = [];
         foreach ($model as $element) {
-            $name = $element->getName();
-            if (!isset($nameCount[$name])) {
-                $nameCount[$name] = 0;
+            if (!isset($nameCount[$element->name])) {
+                $nameCount[$element->name] = 0;
             }
-            ++$nameCount[$name];
+            ++$nameCount[$element->name];
         }
         $messages = [];
         foreach ($nameCount as $name => $count) {
             if ($count > 1) {
-                $messages[] = sprintf(
-                    'Collection "%s" cannot have name "%s" duplicates (%s occurences)',
-                    $modelType,
-                    $name,
-                    $count
-                );
+                $messages[] = "Collection \"{$modelType}\" cannot have name \"{$name}\" duplicates ({$count} occurences)";
             }
         }
 
-        return empty($messages) ? new NoneViolation() : new SomeViolation(implode("\n", $messages));
+        return [] === $messages
+            ? new NoneViolation()
+            : new SomeViolation(implode("\n", $messages));
     }
 }
