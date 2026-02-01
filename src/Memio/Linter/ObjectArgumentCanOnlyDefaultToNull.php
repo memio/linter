@@ -11,7 +11,6 @@
 
 namespace Memio\Linter;
 
-use Memio\Model\Type;
 use Memio\Validator\Constraint;
 use Memio\Validator\Violation;
 use Memio\Validator\Violation\NoneViolation;
