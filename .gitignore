@@ -3,4 +3,4 @@
 /phpunit.xml
 /vendor
 /.couscous
-/.php_cs.cache
+/.php-cs-fixer.cache
